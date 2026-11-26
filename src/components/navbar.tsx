@@ -145,6 +145,7 @@ export function Navbar({ resumeAvailable }: { resumeAvailable: boolean }) {
               href={site.resumePath}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Open resume in a new tab"
               className={keyClass}
             >
               <KeyCap variant="signal" size="sm">

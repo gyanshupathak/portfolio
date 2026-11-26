@@ -9,7 +9,6 @@ export const site = {
   role: "AI-Native Product Builder",
   email: "gyanshupathak77@gmail.com",
   resumePath: "/media/resume.pdf",
-  resumeFileName: "Gyanshu-Pathak-Resume.pdf",
   copyrightYear: 2026,
 
   meta: {

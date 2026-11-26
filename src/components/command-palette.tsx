@@ -3,9 +3,9 @@
 import {
   Briefcase,
   Clapperboard,
+  ArrowUpRight,
   Copy,
   CornerDownLeft,
-  Download,
   Film,
   FlaskConical,
   Layers,
@@ -345,18 +345,13 @@ export function CommandPalette({ resumeAvailable }: { resumeAvailable: boolean }
     {
       id: "resume",
       group: "Actions",
-      label: "Download Resume PDF",
-      keywords: "cv",
+      label: "Open Resume",
+      keywords: "cv pdf download",
       hint: resumeAvailable ? "PDF" : "Not added yet",
-      icon: Download,
+      icon: ArrowUpRight,
       disabled: !resumeAvailable,
       mode: "now",
-      run: () => {
-        const link = document.createElement("a");
-        link.href = site.resumePath;
-        link.download = site.resumeFileName;
-        link.click();
-      },
+      run: () => window.open(site.resumePath, "_blank", "noopener,noreferrer"),
     },
     {
       id: "email",
