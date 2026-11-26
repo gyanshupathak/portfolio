@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/*
+ * Three colours and nothing else: paper, ink and one orange. Light and dark
+ * mode swap paper and ink; the orange stays the same in both.
+ */
+:root,
+[data-theme="light"] {
+  --paper: #f7f6f2;
+  --card: #ffffff;
+  --sand: #ebe9e3;
+  --ink: #111111;
+  --ink-muted: #56534e;
+  --ink-faint: #8c8881;
+  --hairline: rgb(17 17 17 / 0.12);
+  --hairline-strong: rgb(17 17 17 / 0.26);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #0c0c0c;
+  --card: #151515;
+  --sand: #1f1f1f;
+  --ink: #f4f2ee;
+  --ink-muted: #a9a59e;
+  --ink-faint: #6f6b65;
+  --hairline: rgb(244 242 238 / 0.12);
+  --hairline-strong: rgb(244 242 238 / 0.26);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:
+    var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+}
+
+@theme {
+  --color-signal: #ff4f00;
+  --color-signal-deep: #b83800;
+  /* Text on orange, white in both themes. */
+  --color-on-signal: #ffffff;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+
+  /* Every animation below moves only transform and opacity. */
+  --animate-live-ping: live-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-flow: flow 2.6s linear infinite;
+  --animate-blink: blink 1.1s steps(1) infinite;
+
+  @keyframes live-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+  }
+
+  @keyframes flow {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(400%);
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+/* Headlines: Archivo at its narrowest and heaviest. */
+@utility display {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-stretch: 62%;
+  font-variation-settings: "wdth" 62;
+  letter-spacing: -0.012em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+/* The counterweight: the same family pushed wide, for single emphasised words. */
+@utility accent {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.03em;
+}
+
+/* Small mono label used for metadata. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    -webkit-text-size-adjust: 100%;
+    /* Keeps the layout from shifting when a dialog locks page scrolling. */
+    scrollbar-gutter: stable;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 79 0 / 0.6) transparent;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  /* The custom cursor replaces the system one where it is active. */
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* Diagonal hatching for empty media states. */
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--hairline) 0 1px,
+    transparent 1px 11px
+  );
+}
+
+/* Fine layout grid, like the guides of a design file. */
+.guides {
+  background-image:
+    linear-gradient(var(--hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+/* Removes the preloader on its own if scripts never get to lift it. */
+.preloader {
+  animation: preloader-failsafe 0.4s ease 6s forwards;
+}
+@keyframes preloader-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+  .preloader {
+    display: none;
+  }
+}
